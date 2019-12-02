@@ -5,14 +5,16 @@
  */
 package br.edu.ufabc.fastsharecms.controller;
 
+import br.edu.ufabc.fastsharecms.dao.UserDAO;
 import br.edu.ufabc.fastsharecms.model.User;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.http.client.utils.URIBuilder;
 
 /**
  *
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SignIn", urlPatterns = {"/signin", "/login"})
 public class SignIn extends HttpServlet {
 
+    private UserDAO udao;
     private static final long serialVersionUID = 5L;
 
     /**
@@ -54,24 +57,30 @@ public class SignIn extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            String redirect = request.getParameter("redirect");
-            String action = request.getParameter("action");
-            
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SignIn</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Test servlet (uname) : " + username + "</h1>");
-            out.println("<h1>Test servlet (pswd) : " + password + "</h1>");
-            out.println("<h1>Test servlet (rdir) : " + redirect + "</h1>");
-            out.println("<h1>Test servlet (act) : " + action + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String redirect = request.getParameter("redirect");
+        String action = request.getParameter("action");
+
+        udao = UserDAO.getInstance();
+        User suser = udao.select(serialVersionUID);
+
+        if (suser != null) {
+            suser.setUsername(username);
+            request.getSession().setAttribute("connected_user", suser);
+        }
+        
+        String forward = "/";
+        if (redirect == null) response.sendRedirect(forward);
+        try {
+            URIBuilder req = new URIBuilder(redirect);
+            if (action == null) action = "create";
+            req.addParameter("action", action);
+            forward = req.build().toString();
+        } catch (URISyntaxException ex) {
+            response.sendRedirect("/500");
+        } finally {
+            response.sendRedirect(forward);
         }
     }
 

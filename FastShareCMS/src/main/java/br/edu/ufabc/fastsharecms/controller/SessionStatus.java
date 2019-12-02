@@ -1,5 +1,7 @@
 package br.edu.ufabc.fastsharecms.controller;
 
+import br.edu.ufabc.fastsharecms.model.User;
+import com.google.gson.JsonObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -10,20 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "SessionStatus", urlPatterns = {"/sessionstatus"})
 public class SessionStatus extends HttpServlet {
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.getRequestDispatcher("/404.html").forward(request, response);
-    }
 
+    private static final long serialVersionUID = 7L;
+    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -35,18 +26,20 @@ public class SessionStatus extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json;charset=UTF-8");
+        User conn = (User)request.getSession().getAttribute("connected_user");
+        Boolean connected = conn != null;
+        
+        JsonObject obj = new JsonObject();
+        obj.addProperty("connected", connected);
+        if (connected){
+            obj.addProperty("id", conn.getId());
+            obj.addProperty("username", conn.getUsername());
+            obj.addProperty("email", conn.getEmail());
+        }
+        
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SessionStatus</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SessionStatus at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            out.print(obj.toString());
         }
     }
 

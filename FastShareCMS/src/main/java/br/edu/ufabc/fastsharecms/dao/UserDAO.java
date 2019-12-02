@@ -10,10 +10,17 @@ import java.util.List;
  */
 public class UserDAO implements GenericDAO<User>{
 
+    private static UserDAO udao = null;
+    
     private final DatabaseConn db;
 
-    public UserDAO() {
+    private UserDAO() {
         this.db = DatabaseConn.getInstance();
+    }
+    
+    public static UserDAO getInstance(){
+        if (udao == null) udao = new UserDAO();
+        return udao;
     }
     
     @Override
@@ -48,6 +55,10 @@ public class UserDAO implements GenericDAO<User>{
 
     @Override
     public User select(Long index) {
+        return new User();
+    }
+    
+    public User select(String username){
         return new User();
     }
 

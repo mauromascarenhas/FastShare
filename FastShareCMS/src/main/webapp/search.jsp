@@ -1,22 +1,27 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <html lang="en-GB">
     <head>
         <meta charset="utf-8">
-        <title>Post Editor | FastShare CMS</title>
+        <title>FastShare CMS | Home</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
-        <link rel="stylesheet" href="/styles/default.css">
+        <script src="/scripts/homefeeder.js"></script>
         
         <link rel="shortcut icon" href="/imgs/logo_sr.png">
         <link rel="apple-touch-icon" href="/imgs/logo_sr.png">
+        
+        <link rel="stylesheet" href="/styles/default.css">
     </head>
-    
     <body>
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -33,12 +38,12 @@
                     <li class="nav-item">
                       <a class="nav-link" href="/">Home <span class="sr-only">(página atual)</span></a>
                     </li>
-                    <li class="nav-item dropdown active">
+                    <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Posts
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item active" href="/#">Create New</a>
+                        <a class="dropdown-item" href="/editor">Create New</a>
                         <a class="dropdown-item disabled" href="/my-posts">My Posts</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item disabled" href="/manage-users">Manage Users</a>
@@ -58,35 +63,39 @@
         
         <!-- Content -->
         <main role="main" class="container">
-            <div class="container d-flex justify-content-center text-center">
-                <center>
-                    <form class="mt-5" method="post">
-                        <div class="form-group input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"> <i class="fa fa-heading"></i> </span>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h1 class="mt-3">Search results for : <c:out value="${param['query']}"></c:out></h1>
+                        <p class="lead">Here is what we could find using your search criteria...</p>
+                        <div id="posts">
+                            
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card" style="margin-bottom: 20px;">
+                            <div class="card-header text-center">
+                                Quick Links
                             </div>
-                            <input name="title" class="form-control" placeholder="Title" type="text" required="true">
+                            <div class="list-group list-group-flush">
+                              <a class="list-group-item list-group-item-action" href="/editor">Create New Post</a>
+                              <a class="list-group-item list-group-item-action disabled" href="/manage-users">Manage Users</a>
+                              <a class="list-group-item list-group-item-action" href="/about">About Us</a>
+                            </div>
                         </div>
                         
-                        <div class="form-group input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"> <i class="fa fa-images"></i> </span>
+                        <div class="card text-center" style="margin-bottom: 20px;">
+                            <div class="card-header">
+                                About Us
                             </div>
-                            <input name="image-url" class="form-control" placeholder="https://server.domain/image.extension" type="text" required="true">
-                        </div>
-                        
-                        <div class="form-group input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"> <i class="fa fa-align-justify"></i> </span>
+                            <div class="card-body">
+                                <blockquote class="blockquote mb-0">
+                                    <p class="card-text">FastShare is a simple CMS which focuses on making people's life easier to spread quick information. <a href="/about" class="card-link">Learn more about us!</a></p>
+                                </blockquote>
                             </div>
-                            <textarea rows="3" name="description" class="form-control" placeholder="Your description goes here!" required="true"></textarea>
                         </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block"> SAVE </button>
-                        </div>
-                    </form>
-                </center>
+                    </div>
+                </div>
             </div>
         </main>
         

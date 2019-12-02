@@ -35,7 +35,7 @@ public class PostEditor extends HttpServlet {
         Object act = request.getAttribute("action");
         String action = act == null ? "create" : act.toString();
         
-        User loggedUser = (User)request.getSession().getAttribute("conn_user");
+        User loggedUser = (User)request.getSession().getAttribute("connected_user");
         if (loggedUser == null){
             try{
                 URIBuilder redirect = new URIBuilder("/signin");
@@ -65,26 +65,28 @@ public class PostEditor extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Object act = request.getAttribute("action");
+        String action = act == null ? "create" : act.toString();
+        
+        String redirectURL = "/editor.jsp";
         response.setContentType("text/html;charset=UTF-8");
-        
-        String output = "LOGGED IN";
-        
-        User loggedUser = (User)request.getSession().getAttribute("conn_user");
-        if (loggedUser == null) output = "NOT " + output;
-        
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SignIn</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SignIn at " + output + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        User loggedUser = (User)request.getSession().getAttribute("connected_user");
+        if (loggedUser == null){
+            try{
+                URIBuilder redirect = new URIBuilder("/signin");
+                redirect.addParameter("redirect", "/editor")
+                        .addParameter("action", action);
+                redirectURL = redirect.build().toString();
+            } catch (URISyntaxException e){
+                redirectURL = "/500";
+            } finally {
+                response.sendRedirect(redirectURL);
+            }
+            return;
         }
+        
+        response.setContentType("text/html;charset=UTF-8");
+        request.getRequestDispatcher("/editor.jsp").forward(request, response);
     }
 
     /**
