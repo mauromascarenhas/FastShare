@@ -16,12 +16,18 @@ and open the template in the editor.
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <script src="/scripts/homefeeder.js"></script>
         
+        <link rel="shortcut icon" href="/imgs/logo_sr.png">
+        <link rel="apple-touch-icon" href="/imgs/logo_sr.png">
+        
         <link rel="stylesheet" href="/styles/default.css">
     </head>
     <body>
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="#">FastShareCMS</a>
+                <a class="navbar-brand" href="/">
+                    <img src="/imgs/logo_hr.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+                    FastShareCMS
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
                   <span class="navbar-toggler-icon"></span>
                 </button>
@@ -37,13 +43,13 @@ and open the template in the editor.
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/editor">Create New</a>
-                        <a class="dropdown-item" href="#">My Posts</a>
+                        <a class="dropdown-item disabled" href="/my-posts">My Posts</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item disabled" href="#">Manage Users</a>
+                        <a class="dropdown-item disabled" href="/manage-users">Manage Users</a>
                       </div>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link disabled" href="#">About</a>
+                      <a class="nav-link" href="/about">About</a>
                     </li>
                   </ul>
                   <form class="form-inline my-2 my-lg-0" action="search" method="GET">
@@ -63,6 +69,8 @@ and open the template in the editor.
                         <p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code>padding-top: 60px;</code> on the <code>body &gt; .container</code>.</p>
                         <p>Back to <a href="../sticky-footer/">the default sticky footer</a> minus the navbar.</p>
 
+                        <div id="posts"></div>
+                        
                         <button id="load_more" class="btn btn-outline-success my-2 my-sm-0 lead" onclick="getData()">Carregar mais...</button>
                         <div id="loading_spinner" class="d-flex justify-content-center" style="visibility:hidden;">
                             <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
@@ -76,9 +84,9 @@ and open the template in the editor.
                                 Quick Links
                             </div>
                             <div class="list-group list-group-flush">
-                              <a class="list-group-item list-group-item-action">Cras justo odio</a>
-                              <a class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-                              <a class="list-group-item list-group-item-action">Vestibulum at eros</a>
+                              <a class="list-group-item list-group-item-action" href="/editor">Create New Post</a>
+                              <a class="list-group-item list-group-item-action disabled" href="/manage-users">Manage Users</a>
+                              <a class="list-group-item list-group-item-action" href="/about">About Us</a>
                             </div>
                         </div>
                         
@@ -88,7 +96,7 @@ and open the template in the editor.
                             </div>
                             <div class="card-body">
                                 <blockquote class="blockquote mb-0">
-                                  <p class="card-text">FastShare is a simple CMS which focuses on making people's life easier to spread quick information. <a href="/about" class="card-link">Learn more about us</a></p>
+                                    <p class="card-text">FastShare is a simple CMS which focuses on making people's life easier to spread quick information. <a href="/about" class="card-link">Learn more about us!</a></p>
                                 </blockquote>
                             </div>
                         </div>
