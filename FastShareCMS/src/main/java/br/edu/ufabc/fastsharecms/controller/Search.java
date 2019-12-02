@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "Search", urlPatterns = {"/search"})
 public class Search extends HttpServlet {
 
+    private static final long serialVersionUID = 4L;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

@@ -11,14 +11,18 @@
         <script src="/scripts/signup.js"></script>
 
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+        
+        <link rel="shortcut icon" href="/imgs/logo_sr.png">
+        <link rel="apple-touch-icon" href="/imgs/logo_sr.png">
 
         <title>FastShare CMS | SignUp</title>
     </head>
 
     <body class="bg-light">
         <article class="card-body mx-auto" style="max-width: 95%; width: 600px;">
+            <img src="/imgs/logo_hr.svg" class="mx-auto d-block" style="max-width: 95%; width: 150px;">
             <h4 class="card-title mt-3 text-center">Sign Up At FastShareCMS</h4>
-            <form method="post" oninput="password_c.setCustomValidity(password_c.value != password.value ? 'Passwords do not match' : '')">
+            <form class="mt-5" method="post" oninput="password_c.setCustomValidity(password_c.value != password.value ? 'Passwords do not match' : '')">
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-file-signature"></i> </span>

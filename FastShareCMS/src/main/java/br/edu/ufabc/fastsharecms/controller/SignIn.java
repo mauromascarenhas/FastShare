@@ -21,38 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SignIn", urlPatterns = {"/signin", "/login"})
 public class SignIn extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String output = "LOGGED IN";
-        
-        User loggedUser = (User)request.getSession().getAttribute("conn_user");
-        if (loggedUser == null) output = "NOT " + output;
-        
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet SignIn</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet SignIn at " + output + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+    private static final long serialVersionUID = 5L;
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -64,7 +34,12 @@ public class SignIn extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        User loggedUser = (User)request.getSession().getAttribute("conn_user");
+        Boolean loggedIn = loggedUser != null;
+        
+        response.setContentType("text/html;charset=UTF-8");
+        if (loggedIn) response.sendRedirect("/editor.jsp");
+        else request.getRequestDispatcher("/signin.jsp").forward(request, response);
     }
 
     /**
@@ -78,7 +53,26 @@ public class SignIn extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            String redirect = request.getParameter("redirect");
+            String action = request.getParameter("action");
+            
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet SignIn</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Test servlet (uname) : " + username + "</h1>");
+            out.println("<h1>Test servlet (pswd) : " + password + "</h1>");
+            out.println("<h1>Test servlet (rdir) : " + redirect + "</h1>");
+            out.println("<h1>Test servlet (act) : " + action + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     /**

@@ -52,10 +52,10 @@ public class PostLoader extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("Aqui men!");
         response.setContentType("application/json;charset=UTF-8");
         
         JsonArray obj = new JsonArray();
+        // TODO: Implement here!
         for (Post p : PostDAO.getInstance().selectAll())
             obj.add(Boolean.TRUE);
         
