@@ -58,23 +58,24 @@
         
         <!-- Content -->
         <main role="main" class="container">
-            <div class="container d-flex justify-content-center text-center">
-                <center>
-                    <form class="mt-5" method="post">
+            <div class="row">
+                <div class="col-sm-5">
+                    <h4 class="mt-3 text-center">Post details</h4>
+                    <form class="mt-1" method="post" action="/editor">
                         <div class="form-group input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-heading"></i> </span>
                             </div>
                             <input name="title" class="form-control" placeholder="Title" type="text" required="true">
                         </div>
-                        
+
                         <div class="form-group input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-images"></i> </span>
                             </div>
                             <input name="image-url" class="form-control" placeholder="https://server.domain/image.extension" type="text" required="true">
                         </div>
-                        
+
                         <div class="form-group input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-align-justify"></i> </span>
@@ -82,11 +83,29 @@
                             <textarea rows="3" name="description" class="form-control" placeholder="Your description goes here!" required="true"></textarea>
                         </div>
 
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-external-link"></i> </span>
+                            </div>
+                            <input name="link" class="form-control" placeholder="https://mylink.to/page/article/etc" type="text" required="true">
+                        </div>
+
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block"> SAVE </button>
                         </div>
                     </form>
-                </center>
+                </div>
+                <div class="col-sm-7">
+                    <h4 class="mt-3 text-center">Post Preview</h4>
+                    <div class="card mb-3">
+                        <img src="/imgs/gray-background.jpg" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Title</h5>
+                            <p class="card-text">Your description goes here!</p>
+                            <p class="card-text"><small class="text-muted">Last updated x mins ago...</small></p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
         
