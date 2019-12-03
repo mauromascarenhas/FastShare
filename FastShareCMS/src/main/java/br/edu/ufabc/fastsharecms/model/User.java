@@ -7,11 +7,17 @@ package br.edu.ufabc.fastsharecms.model;
 public class User {
     private Long id;
     private String name;
+    private String role;
     private String email;
     private String psalt;
     private String phash;
     private String username;
-    private String approved;
+    private Boolean approved;
+    
+    public User(){
+        this.id = -1L;
+        this.approved = Boolean.FALSE;
+    }
 
     public Long getId() {
         return id;
@@ -27,6 +33,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
     
     public String getEmail() {
@@ -61,11 +75,11 @@ public class User {
         this.username = username;
     }
 
-    public String getApproved() {
-        return approved;
+    public Boolean getApproved() {
+        return approved || Boolean.TRUE;
     }
 
-    public void setApproved(String approved) {
+    public void setApproved(Boolean approved) {
         this.approved = approved;
     }
 }

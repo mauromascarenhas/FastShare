@@ -11,6 +11,7 @@ public class Post {
     private Long author;
     private String title;
     private String imgURL;
+    private String postLink;
     private String description;
 
     public Long getId() {
@@ -59,6 +60,14 @@ public class Post {
 
     public void setImgURL(String imgURL) {
         this.imgURL = imgURL;
+    }
+
+    public String getPostLink() {
+        return postLink;
+    }
+
+    public void setPostLink(String postLink) {
+        this.postLink = postLink;
     }
 
     public String getDescription() {

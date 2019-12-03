@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+    <head>
+        <meta charset="utf-8">
+        <title>Fail | FastShare CMS</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="/scripts/homefeeder.js"></script>
+        
+        <link rel="stylesheet" href="/styles/default.css">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href="/">
+                    <img src="/imgs/logo_hr.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+                    FastShareCMS
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="#">Home <span class="sr-only">(página atual)</span></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Posts
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/editor">Create New</a>
+                        <a class="dropdown-item disabled" href="/my-posts">My Posts</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item disabled" href="/manage-users">Manage Users</a>
+                      </div>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/about">About</a>
+                    </li>
+                  </ul>
+                  <form class="form-inline my-2 my-lg-0" action="search" method="GET">
+                    <input name="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button id="search_btn" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                  </form>
+                </div>
+            </nav>
+        </header>
+        
+        <!-- Content -->
+        <main role="main" class="container">
+            <div class="container d-flex justify-content-center text-center">
+                <center>
+                    <h1 class="mt-5">Fail</h1>
+                    <p class="lead">An error has occurred!</p>
+                    <p class="lead">It seems that an error has occurred while we've tried register your credentials.</p>
+                    <p class="lead">Please, try again later.</p>
+                    <button class="btn btn-outline-success my-2 my-sm-0 lead" onclick="window.location='/signup'">Try again</button>
+                </center>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <div class="container">
+              <span class="text-muted">Copyright &copy; 2019. FastShareCMS - All rights reserved.</span>
+            </div>
+      </footer>
+    </body>
+</html>
