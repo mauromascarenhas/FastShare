@@ -26,7 +26,7 @@ public class SessionStatus extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType("application/json");
         User conn = (User)request.getSession().getAttribute("connected_user");
         Boolean connected = conn != null;
         
@@ -34,7 +34,9 @@ public class SessionStatus extends HttpServlet {
         obj.addProperty("connected", connected);
         if (conn != null){
             obj.addProperty("id", conn.getId());
+            obj.addProperty("name", conn.getName());
             obj.addProperty("username", conn.getUsername());
+            obj.addProperty("approved", conn.getApproved());
             obj.addProperty("email", conn.getEmail());
         }
         

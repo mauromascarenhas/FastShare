@@ -69,12 +69,16 @@ public class SignIn extends HttpServlet {
 //            
 //        }
         if (suser != null) {
+            suser.setName(username);
             suser.setUsername(username);
             request.getSession().setAttribute("connected_user", suser);
         }
         
         String forward = "/";
-        if (redirect == null) response.sendRedirect(forward);
+        if (redirect == null){
+            response.sendRedirect(forward);
+            return;
+        }
         try {
             URIBuilder req = new URIBuilder(redirect);
             if (action == null) action = "create";

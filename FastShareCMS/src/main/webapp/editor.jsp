@@ -9,6 +9,8 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="/scripts/previewupdater.js"></script>
+        <script src="/scripts/verifier.js"></script>
         
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
         <link rel="stylesheet" href="/styles/default.css">
@@ -66,26 +68,26 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-heading"></i> </span>
                             </div>
-                            <input name="title" class="form-control" placeholder="Title" type="text" required="true">
+                            <input name="title" class="form-control" placeholder="Title" type="text" required="true" oninput="updateTitle(this.value);">
                         </div>
 
                         <div class="form-group input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-images"></i> </span>
                             </div>
-                            <input name="image-url" class="form-control" placeholder="https://server.domain/image.extension" type="text" required="true">
+                            <input name="image-url" class="form-control" placeholder="https://server.domain/image.extension" type="text" required="true" onfocusout="updateImage(this.value);">
                         </div>
 
                         <div class="form-group input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-align-justify"></i> </span>
                             </div>
-                            <textarea rows="3" name="description" class="form-control" placeholder="Your description goes here!" required="true"></textarea>
+                            <textarea rows="3" max-length="512" name="description" class="form-control" placeholder="Your description goes here!" required="true" oninput="updateText(this.value);"></textarea>
                         </div>
 
                         <div class="form-group input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"> <i class="fa fa-external-link"></i> </span>
+                                <span class="input-group-text"> <i class="fa fa-external-link-alt"></i> </span>
                             </div>
                             <input name="link" class="form-control" placeholder="https://mylink.to/page/article/etc" type="text" required="true">
                         </div>
@@ -98,11 +100,11 @@
                 <div class="col-sm-7">
                     <h4 class="mt-3 text-center">Post Preview</h4>
                     <div class="card mb-3">
-                        <img src="/imgs/gray-background.jpg" alt="...">
+                        <img id="pv_image" src="/imgs/gray-background.jpg" class="img-fluid">
                         <div class="card-body">
-                            <h5 class="card-title">Title</h5>
-                            <p class="card-text">Your description goes here!</p>
-                            <p class="card-text"><small class="text-muted">Last updated x mins ago...</small></p>
+                            <h5 id="pv_title" class="card-title">Title</h5>
+                            <p id="pv_text" class="card-text">Your description goes here!</p>
+                            <p class="card-text"><small class="text-muted" data-uname="1">&lt; YourUsername &gt;</small></p>
                         </div>
                     </div>
                 </div>
