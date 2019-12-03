@@ -41,7 +41,7 @@ public class SignIn extends HttpServlet {
         Boolean loggedIn = loggedUser != null;
         
         response.setContentType("text/html;charset=UTF-8");
-        if (loggedIn) response.sendRedirect("/editor.jsp");
+        if (loggedIn) response.sendRedirect("/");
         else request.getRequestDispatcher("/signin.jsp").forward(request, response);
     }
 
@@ -63,8 +63,11 @@ public class SignIn extends HttpServlet {
         String action = request.getParameter("action");
 
         udao = UserDAO.getInstance();
-        User suser = udao.select(serialVersionUID);
+        User suser = udao.select(username);
 
+//        if (suser.getPhash().equals()){
+//            
+//        }
         if (suser != null) {
             suser.setUsername(username);
             request.getSession().setAttribute("connected_user", suser);
@@ -92,6 +95,5 @@ public class SignIn extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

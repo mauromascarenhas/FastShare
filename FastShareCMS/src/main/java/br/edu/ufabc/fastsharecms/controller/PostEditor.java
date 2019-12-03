@@ -2,7 +2,6 @@ package br.edu.ufabc.fastsharecms.controller;
 
 import br.edu.ufabc.fastsharecms.model.User;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,6 +48,7 @@ public class PostEditor extends HttpServlet {
             }
             return;
         }
+        else if (!loggedUser.getApproved()) redirectURL = "/users/no_access.html";
         
         response.setContentType("text/html;charset=UTF-8");
         request.getRequestDispatcher(redirectURL).forward(request, response);

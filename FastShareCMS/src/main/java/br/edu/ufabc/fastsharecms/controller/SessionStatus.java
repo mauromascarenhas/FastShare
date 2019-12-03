@@ -32,7 +32,7 @@ public class SessionStatus extends HttpServlet {
         
         JsonObject obj = new JsonObject();
         obj.addProperty("connected", connected);
-        if (connected){
+        if (conn != null){
             obj.addProperty("id", conn.getId());
             obj.addProperty("username", conn.getUsername());
             obj.addProperty("email", conn.getEmail());
