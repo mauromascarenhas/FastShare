@@ -1,5 +1,7 @@
 package br.edu.ufabc.fastsharecms.model;
 
+import java.util.Date;
+
 /**
  *
  * @author Mauro
@@ -8,12 +10,19 @@ public class Post {
     private Long id;
     private Long date;
     private Long flags;
-    private Long author;
+    private User author;
     private String title;
     private String imgURL;
     private String postLink;
     private String description;
 
+    public Post(){
+        this.id = -1L;
+        this.date = new Date().getTime();
+        this.flags = 0L;
+        this.author = null;
+    }
+    
     public Long getId() {
         return id;
     }
@@ -38,11 +47,11 @@ public class Post {
         this.flags = flags;
     }
 
-    public Long getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(Long author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 

@@ -24,12 +24,12 @@ public class PostDAO implements GenericDAO<Post>{
 
     @Override
     public Boolean exists(Post item) {
-        return false;
+        return select(item) != null;
     }
 
     @Override
-    public boolean exists(Long index) {
-        return false;
+    public Boolean exists(Long index) {
+        return select(index) != null;
     }
 
     @Override
@@ -54,6 +54,11 @@ public class PostDAO implements GenericDAO<Post>{
 
     @Override
     public Post select(Long index) {
+        return new Post();
+    }
+    
+    @Override
+    public Post select(Post item) {
         return new Post();
     }
 

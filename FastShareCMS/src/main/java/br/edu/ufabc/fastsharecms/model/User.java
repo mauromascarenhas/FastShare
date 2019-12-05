@@ -18,6 +18,11 @@ public class User {
         this.id = -1L;
         this.approved = Boolean.FALSE;
     }
+    
+    public User(String username){
+        this();
+        this.username = username;
+    }
 
     public Long getId() {
         return id;

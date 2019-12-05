@@ -1,8 +1,11 @@
 package br.edu.ufabc.fastsharecms.controller;
 
+import br.edu.ufabc.fastsharecms.dao.PostDAO;
+import br.edu.ufabc.fastsharecms.model.Post;
 import br.edu.ufabc.fastsharecms.model.User;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -85,8 +88,23 @@ public class PostEditor extends HttpServlet {
             return;
         }
         
+        Post post = new Post();
+        post.setTitle(request.getParameter("title"));
+        post.setImgURL(request.getParameter("image-url"));
+        post.setDescription(request.getParameter("description"));
+        post.setAuthor(loggedUser);
+        post.setDate(new Date().getTime());
+        post.setFlags(0L);
+        post.setPostLink(request.getParameter("link"));
+        
+        if (PostDAO.getInstance().insert(post)){
+            response.setContentType("text/html;charset=UTF-8");
+            request.getRequestDispatcher("/posts/success.html").forward(request, response);
+            return;
+        }
+        
         response.setContentType("text/html;charset=UTF-8");
-        request.getRequestDispatcher("/editor.jsp").forward(request, response);
+        request.getRequestDispatcher("/posts/fail.html").forward(request, response);
     }
 
     /**

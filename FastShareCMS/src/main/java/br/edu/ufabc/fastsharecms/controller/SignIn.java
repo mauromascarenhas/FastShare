@@ -8,7 +8,10 @@ package br.edu.ufabc.fastsharecms.controller;
 import br.edu.ufabc.fastsharecms.dao.UserDAO;
 import br.edu.ufabc.fastsharecms.model.User;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URISyntaxException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -63,32 +66,45 @@ public class SignIn extends HttpServlet {
         String action = request.getParameter("action");
 
         udao = UserDAO.getInstance();
-        User suser = udao.select(username);
+        User suser = udao.select(new User(username));
 
-//        if (suser.getPhash().equals()){
-//            
-//        }
         if (suser != null) {
-            suser.setName(username);
-            suser.setUsername(username);
-            request.getSession().setAttribute("connected_user", suser);
+            byte[] passByte = password.getBytes("UTF-8");
+            byte[] toDigest = new byte[20 + passByte.length];
+            byte[] salt = suser.getPsalt().getBytes();
+
+            for (int i = 0; i < 20; ++i) toDigest[i] = salt[i];
+            for (int i = 21; i < passByte.length + 20; ++i) toDigest[i] = passByte[i - 21];
+            System.out.println(new String(salt));
+
+            try {
+                MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                digest.reset();
+                digest.update(toDigest);
+                
+                if (String.format("%064x", new BigInteger(1, digest.digest())).equals(suser.getPhash()))
+                    request.getSession().setAttribute("connected_user", suser);
+                
+                if (redirect == null) {
+                    response.sendRedirect("/");
+                    return;
+                }
+                
+                URIBuilder req = new URIBuilder(redirect);
+                if (action == null) action = "create";
+                req.addParameter("action", action);
+                redirect = req.build().toString();
+                response.sendRedirect(redirect);
+            } catch (NoSuchAlgorithmException e) {
+                redirect = "/users/create_fail.html";
+            } catch (URISyntaxException ex) {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                return;
+            }
+            response.sendRedirect(redirect);
+            getServletContext().getRequestDispatcher(redirect).forward(request, response);
         }
-        
-        String forward = "/";
-        if (redirect == null){
-            response.sendRedirect(forward);
-            return;
-        }
-        try {
-            URIBuilder req = new URIBuilder(redirect);
-            if (action == null) action = "create";
-            req.addParameter("action", action);
-            forward = req.build().toString();
-        } catch (URISyntaxException ex) {
-            response.sendRedirect("/500");
-        } finally {
-            response.sendRedirect(forward);
-        }
+        else request.getRequestDispatcher("/users/login_error.html").forward(request, response);
     }
 
     /**
