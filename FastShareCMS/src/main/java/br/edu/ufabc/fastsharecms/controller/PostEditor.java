@@ -51,6 +51,7 @@ public class PostEditor extends HttpServlet {
             }
             return;
         }
+        // TODO : Fix this lack of recognition
         else if (!loggedUser.getApproved()) redirectURL = "/users/no_access.html";
         
         response.setContentType("text/html;charset=UTF-8");

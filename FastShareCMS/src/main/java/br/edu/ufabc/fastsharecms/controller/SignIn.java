@@ -10,6 +10,7 @@ import br.edu.ufabc.fastsharecms.model.User;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import javax.servlet.ServletException;
@@ -69,13 +70,7 @@ public class SignIn extends HttpServlet {
         User suser = udao.select(new User(username));
 
         if (suser != null) {
-            byte[] passByte = password.getBytes("UTF-8");
-            byte[] toDigest = new byte[20 + passByte.length];
-            byte[] salt = suser.getPsalt().getBytes();
-
-            for (int i = 0; i < 20; ++i) toDigest[i] = salt[i];
-            for (int i = 21; i < passByte.length + 20; ++i) toDigest[i] = passByte[i - 21];
-            System.out.println(new String(salt));
+            byte[] toDigest = (suser.getPsalt() + password).getBytes(Charset.forName("UTF-8"));
 
             try {
                 MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -84,6 +79,10 @@ public class SignIn extends HttpServlet {
                 
                 if (String.format("%064x", new BigInteger(1, digest.digest())).equals(suser.getPhash()))
                     request.getSession().setAttribute("connected_user", suser);
+                else {
+                    request.getRequestDispatcher("/users/login_error.html").forward(request, response);
+                    return;
+                }
                 
                 if (redirect == null) {
                     response.sendRedirect("/");

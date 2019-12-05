@@ -11,6 +11,7 @@ import com.google.gson.JsonArray;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -56,8 +57,11 @@ public class PostLoader extends HttpServlet {
         
         JsonArray obj = new JsonArray();
         // TODO: Implement here!
-        for (Post p : PostDAO.getInstance().selectAll())
-            obj.add(Boolean.TRUE);
+        List<Post> posts = PostDAO.getInstance().selectAll();
+        if (posts != null){
+            for (Post p : posts)
+                obj.add(Boolean.TRUE);
+        }
         
         try (PrintWriter out = response.getWriter()) {
             out.print(obj.toString());

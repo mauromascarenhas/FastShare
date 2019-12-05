@@ -23,22 +23,25 @@ public class DatabaseConn {
     
     // TODO : ADD constraints
     private static final String[] CREATE_STATEMENT = {
-        "CREATE TABLE IF NOT EXISTS ent_User (id INTEGER(64) NOT NULL,"
+        "CREATE TABLE IF NOT EXISTS ent_User (id BIGINT NOT NULL AUTO_INCREMENT,"
                                             + " username VARCHAR(128) NOT NULL,"
-                                            + " name VARCHAR(256) NOT NULL,"
+                                            + " name VARCHAR(256) NOT NULL UNIQUE,"
                                             + " email VARCHAR(256) NOT NULL,"
                                             + " role VARCHAR(64) NOT NULL,"
                                             + " psalt CHAR(20) NOT NULL,"
                                             + " phash VARCHAR(255) NOT NULL,"
-                                            + " approved TINYINT NOT NULL);",
-        "CREATE TABLE IF NOT EXISTS ent_Post (id INTEGER(64) NOT NULL,"
+                                            + " approved TINYINT NOT NULL,"
+                                            + " PRIMARY KEY(id));",
+        "CREATE TABLE IF NOT EXISTS ent_Post (id BIGINT NOT NULL AUTO_INCREMENT,"
                                             + " date BIGINT NOT NULL,"
-                                            + " flags INTEGER(64) NOT NULL,"
-                                            + " author INTEGER(64) NOT NULL,"
+                                            + " flags BIGINT NOT NULL,"
+                                            + " author BIGINT NOT NULL,"
                                             + " title VARCHAR(128) NOT NULL,"
                                             + " imgurl VARCHAR(512) NOT NULL,"
                                             + " postlink VARCHAR(512) NOT NULL,"
-                                            + " description VARCHAR(512) NOT NULL);"};
+                                            + " description VARCHAR(512) NOT NULL,"
+                                            + " PRIMARY KEY(id),"
+                                            + " FOREIGN KEY(author) REFERENCES ent_User(id));"};
     
     @SuppressWarnings("ConvertToTryWithResources")
     private DatabaseConn(){

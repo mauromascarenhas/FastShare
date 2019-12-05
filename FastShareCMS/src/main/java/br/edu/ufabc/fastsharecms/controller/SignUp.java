@@ -1,8 +1,10 @@
 package br.edu.ufabc.fastsharecms.controller;
 
+import br.edu.ufabc.fastsharecms.dao.UserDAO;
 import br.edu.ufabc.fastsharecms.model.User;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
@@ -55,11 +57,6 @@ public class SignUp extends HttpServlet {
                email = request.getParameter("email"),
                password = request.getParameter("password");
 
-        System.out.println(uName);
-        System.out.println(fName);
-        System.out.println(email);
-        System.out.println(password);
-
         User nuser = new User();
         nuser.setUsername(uName);
         nuser.setName(fName);
@@ -67,28 +64,18 @@ public class SignUp extends HttpServlet {
         nuser.setRole("POSTER");
         nuser.setApproved(Boolean.FALSE);
         
-        byte[] passByte = password.getBytes("UTF-8");
-        byte[] toDigest = new byte[20 + passByte.length];
-        byte[] salt = generateSalt();
-        
-        nuser.setPsalt(new String(salt));
-        
-        for (int i = 0; i < 20; ++i) toDigest[i] = salt[i];
-        for (int i = 21; i < passByte.length + 20; ++i) toDigest[i] = passByte[i - 21];
-        System.out.println(new String(salt));
+        String salt = generateSalt();
+        byte[] toDigest = (salt + password).getBytes(Charset.forName("UTF-8"));
+        nuser.setPsalt(salt);
         
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             digest.reset();
             digest.update(toDigest);
             String pHash = String.format("%064x", new BigInteger(1, digest.digest()));
-            System.out.println(pHash);
             nuser.setPhash(pHash);
             
-            // TODO : Check if exists
-            // TODO : Test user insertion
-            
-            redirectTo = "/users/create_success.html";
+            redirectTo = UserDAO.getInstance().insert(nuser) ? "/users/create_success.html" : "/users/create_fail.html";
         } catch (NoSuchAlgorithmException e) {
             redirectTo = "/users/create_fail.html";
         } finally {
@@ -106,9 +93,9 @@ public class SignUp extends HttpServlet {
         return "Short description";
     }
     
-    private byte [] generateSalt(){
+    private String generateSalt(){
         byte[] salt = new byte[20];
         new Random().nextBytes(salt);
-        return salt;
+        return new String(salt, Charset.forName("UTF-8"));
     }
 }
