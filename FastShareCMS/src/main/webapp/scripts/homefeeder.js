@@ -1,20 +1,16 @@
 var id;
 var begin;
+var endOfPost;
+var loadError;
 var btLoadMode;
 var spnLoading;
 var postContainer;
 
-var test = [{
-    id : 500,
-    author : "anonymous",
-    title : "A Title",
-    description : "I do not know what could I have written here before! (Still don't know).",
-    image_url : "https://helpx.adobe.com/content/dam/help/en/stock/how-to/visual-reverse-image-search/jcr_content/main-pars/image/visual-reverse-image-search-v2_intro.jpg"
-}];
-
 function initializeEnv(){
     id = -1;
     begin = true;
+    endOfPost = document.querySelector("#load_end");
+    loadError = document.querySelector("#load_error");
     btLoadMore = document.querySelector("#load_more");
     spnLoading = document.querySelector("#loading_spinner");
     postContainer = document.querySelector("#post_container");
@@ -22,21 +18,22 @@ function initializeEnv(){
 }
 
 function getData(){
+    loadError.classList.add("d-none");
     btLoadMore.style = "visibility : hidden";
     spnLoading.style = "visibility : visible";
-    
     
     let req = new XMLHttpRequest();
     req.onreadystatechange = function(){
         if (req.readyState === 4){
             if (req.status === 200){
+                console.log(req.responseText);
                 populate(JSON.parse(req.responseText));
-                populate(test);
+            }
+            else {
+                loadError.classList.remove("d-none");
                 spnLoading.style = "visibility : hidden";
                 btLoadMore.style = "visibility : visible";
             }
-            // TODO : Show error div
-            //else ;
         }
     };
     req.open("POST", "/postloader", true);
@@ -56,7 +53,8 @@ function populate(properties){
         card.classList.add("card");
         card.classList.add("mb-3");
         
-        image.class = "card-img-top";
+        image.classList.add("card-img-top");
+        image.classList.add("img-fluid");
         image.src = properties[i]["image_url"];
         image.alt = "Featured image";
         
@@ -66,7 +64,7 @@ function populate(properties){
         header.textContent = properties[i]["title"];
         
         text.classList.add("card-text");
-        text.textContent = properties[i]["description"];
+        text.innerHTML = properties[i]["description"].replace('\n', '<br />');
         
         author.classList.add("text-muted");
         author.textContent = properties[i]["author"] + " ";
@@ -82,6 +80,12 @@ function populate(properties){
         author.appendChild(edit);
         
         document.querySelector("#posts").appendChild(card);
+    }
+    
+    if (properties.length < 10){
+        spnLoading.style = "visibility : hidden";
+        btLoadMore.style = "visibility : hidden";
+        endOfPost.classList.remove("d-none");
     }
 }
 

@@ -43,10 +43,10 @@ public class PostDAO implements GenericDAO<Post>{
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){        
             stm.setLong(1, item.getDate());
             stm.setLong(2, item.getAuthor().getId());
-            stm.setString(2, item.getTitle());
-            stm.setString(3, item.getImgURL());
-            stm.setString(4, item.getPostLink());
-            stm.setString(5, item.getDescription());
+            stm.setString(3, item.getTitle());
+            stm.setString(4, item.getImgURL());
+            stm.setString(5, item.getPostLink());
+            stm.setString(6, item.getDescription());
             return stm.executeUpdate() != 0;
         } catch (SQLException e){
             return false;
@@ -168,11 +168,13 @@ public class PostDAO implements GenericDAO<Post>{
         return post;
     }
 
+    @Override
     public List<Post> selectAll() {
         List<Post> posts = new ArrayList<>();
         String sql = "SELECT *"
                    + " FROM ent_Post INNER JOIN ent_User"
-                   + " ON ent_Post.author = ent_User.id;";
+                   + " ON ent_Post.author = ent_User.id"
+                   + " ORDER BY date DESC";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             ResultSet res = stm.executeQuery();
             if (res.next()){
@@ -208,11 +210,50 @@ public class PostDAO implements GenericDAO<Post>{
         List<Post> posts = new ArrayList<>();
         String sql = "SELECT *"
                    + " FROM ent_Post INNER JOIN ent_User"
-                   + " ON ent_Post.author = ent_User.id;"
-                   + " WHERE title LIKE ? OR description LIKE ?";
+                   + " ON ent_Post.author = ent_User.id"
+                   + " WHERE title LIKE ? OR description LIKE ?"
+                   + " ORDER BY date DESC";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             stm.setString(1, query);
             stm.setString(2, query);
+            ResultSet res = stm.executeQuery();
+            if (res.next()){
+                Post post = new Post();
+                post.setId(res.getLong("ent_Post.id"));
+                post.setDate(res.getLong("date"));
+                post.setFlags(res.getLong("flags"));
+                post.setTitle(res.getString("title"));
+                post.setImgURL(res.getString("imgurl"));
+                post.setPostLink(res.getString("postlink"));
+                post.setDescription(res.getString("description"));
+                
+                User user = new User();
+                user.setId(res.getLong("ent_User.id"));
+                user.setName(res.getString("name"));
+                user.setRole(res.getString("role"));
+                user.setPsalt(res.getString("psalt"));
+                user.setPhash(res.getString("phash"));
+                user.setEmail(res.getString("email"));
+                user.setUsername(res.getString("username"));
+                user.setApproved(res.getInt("approved") == 0 ? Boolean.FALSE : Boolean.TRUE);
+                post.setAuthor(user);
+                posts.add(post);
+            }
+        } catch (SQLException e){
+            return null;
+        }
+        return posts;
+    }
+    
+    public List<Post> selectAllFromDate(Long date) {
+        List<Post> posts = new ArrayList<>();
+        String sql = "SELECT *"
+                   + " FROM ent_Post INNER JOIN ent_User"
+                   + " ON ent_Post.author = ent_User.id"
+                   + " WHERE date < ?"
+                   + " ORDER BY date DESC";
+        try(PreparedStatement stm = db.connection().prepareStatement(sql)){
+            stm.setLong(1, date);
             ResultSet res = stm.executeQuery();
             if (res.next()){
                 Post post = new Post();

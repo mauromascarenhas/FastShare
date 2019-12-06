@@ -8,6 +8,7 @@ package br.edu.ufabc.fastsharecms.controller;
 import br.edu.ufabc.fastsharecms.dao.PostDAO;
 import br.edu.ufabc.fastsharecms.model.Post;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -53,14 +54,21 @@ public class PostLoader extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
         
         JsonArray obj = new JsonArray();
-        // TODO: Implement here!
         List<Post> posts = PostDAO.getInstance().selectAll();
         if (posts != null){
-            for (Post p : posts)
-                obj.add(Boolean.TRUE);
+            for (Post p : posts){
+                JsonObject postObj = new JsonObject();
+                postObj.addProperty("id", p.getId());
+                postObj.addProperty("author", p.getAuthor().getName());
+                postObj.addProperty("title", p.getTitle());
+                postObj.addProperty("description", p.getDescription());
+                postObj.addProperty("image_url", p.getImgURL());
+                obj.add(postObj);
+            }
         }
         
         try (PrintWriter out = response.getWriter()) {

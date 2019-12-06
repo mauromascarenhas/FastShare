@@ -77,6 +77,19 @@ and open the template in the editor.
 
                         <div id="posts"></div>
                         
+                        <div id="load_error" class="card text-white bg-warning mb-3 text-center d-none">
+                            <div class="card-title card-header">Load error</div>
+                            <div class="card-body">
+                                <p class="card-text">Unfortunately it was not possible to load next posts. We suggest you to try again later...</p>
+                            </div>
+                        </div>
+                        <div id="load_end" class="card text-white bg-info mb-3 text-center d-none">
+                            <div class="card-title card-header">End of posts</div>
+                            <div class="card-body">
+                                <p class="card-text">Well, it seems that you have just reached the end of the post list.</p>
+                            </div>
+                        </div>
+                        
                         <button id="load_more" class="btn btn-outline-success my-2 my-sm-0 lead" onclick="getData()">Carregar mais...</button>
                         <div id="loading_spinner" class="d-flex justify-content-center" style="visibility:hidden;">
                             <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">

@@ -5,7 +5,11 @@
  */
 package br.edu.ufabc.fastsharecms.controller;
 
+import br.edu.ufabc.fastsharecms.dao.PostDAO;
+import br.edu.ufabc.fastsharecms.model.Post;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,6 +36,9 @@ public class Search extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        List<Post> results = PostDAO.getInstance().selectAllLike(request.getParameter("query"));
+        if (results == null) results = new ArrayList<>();
+        request.setAttribute("results", results);
         request.getRequestDispatcher("/search.jsp").forward(request, response);
     }
 

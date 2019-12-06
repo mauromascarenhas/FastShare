@@ -86,7 +86,7 @@ public class UserDAO implements GenericDAO<User>{
             stm.setString(4, newData.getEmail());
             stm.setString(5, newData.getPsalt());
             stm.setString(6, newData.getPhash());
-            stm.setInt(7, newData.getApproved() ? 1 : 0);
+            stm.setByte(7, (byte)(newData.getApproved() ? 1 : 0));
             return stm.executeUpdate() != 0;
         } catch (SQLException e){
             return false;
@@ -109,7 +109,7 @@ public class UserDAO implements GenericDAO<User>{
                 user.setPhash(res.getString("phash"));
                 user.setEmail(res.getString("email"));
                 user.setUsername(res.getString("username"));
-                user.setApproved(res.getInt("approved") == 0 ? Boolean.FALSE : Boolean.TRUE);
+                user.setApproved(res.getByte("approved") != 0);
             }
         } catch (SQLException e){
             return null;
@@ -133,7 +133,7 @@ public class UserDAO implements GenericDAO<User>{
                 user.setPhash(res.getString("phash"));
                 user.setEmail(res.getString("email"));
                 user.setUsername(res.getString("username"));
-                user.setApproved(res.getInt("approved") != 0);
+                user.setApproved(res.getByte("approved") != 0);
             }
         } catch (SQLException e){
             return null;
@@ -156,7 +156,7 @@ public class UserDAO implements GenericDAO<User>{
                 user.setPhash(res.getString("phash"));
                 user.setEmail(res.getString("email"));
                 user.setUsername(res.getString("username"));
-                user.setApproved(res.getInt("approved") != 0);
+                user.setApproved(res.getByte("approved") != 0);
                 users.add(user);
             }
         } catch (SQLException e){

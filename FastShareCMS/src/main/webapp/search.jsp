@@ -62,9 +62,24 @@
                 <div class="row">
                     <div class="col-md-8">
                         <h1 class="mt-3">Search results for : <c:out value="${param['query']}"></c:out></h1>
-                        <p class="lead">Here is what we could find using your search criteria...</p>
                         <div id="posts">
-                            
+                        <c:if test="${results.size() eq 0}">
+                            <p class="lead">It seems that we could not find what you were looking for...</p>
+                            <p class="lead">We recommend you to try a new search using different terms.</p>
+                        </c:if>
+                        <c:if test="${results.size() gt 0}">
+                            <p class="lead">Here is what we could find using your search criteria...</p>
+                            <c:forEach var="post" items="${results}">
+                                <div class="card mb-3">
+                                    <img class="card-img-top img-fluid" src="${post.getImgURL()}" alt="Featured image">
+                                    <div class="card-body">
+                                        <h4 class="card-title">${post.getTitle()}</h4>
+                                        <p class="card-text">${post.getDescription()}</p>
+                                        <p class="text-muted">${post.getAuthor().getName()} <a href="/editor?action=&quot;edit&quot;&amp;id=${post.getId()}">( EDIT )</a></p>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </c:if>
                         </div>
                     </div>
                     <div class="col-md-4">
