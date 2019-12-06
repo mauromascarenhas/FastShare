@@ -44,9 +44,9 @@ and open the template in the editor.
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="/editor">Create New</a>
-                                <a class="dropdown-item disabled" href="/my-posts">My Posts</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item disabled" href="/manage-users">Manage Users</a>
+                                <a class="dropdown-item d-none" href="/myposts" data-login="1">My Posts</a>
+                                <div class="dropdown-divider d-none" data-admin="1"></div>
+                                <a class="dropdown-item d-none" href="/usermanagement" data-admin="1">Manage Users</a>
                             </div>
                         </li>
                         <li class="nav-item">
@@ -106,7 +106,7 @@ and open the template in the editor.
                                 <a class="list-group-item list-group-item-action d-none" href="/signin" data-login="0">Sign In</a>
                                 <a class="list-group-item list-group-item-action d-none" href="/signup" data-login="0">Sign Up</a>
                                 <a class="list-group-item list-group-item-action d-none" href="/editor" data-login="1">Create New Post</a>
-                                <a class="list-group-item list-group-item-action d-none" href="/manage-users" data-login="1">Manage Users</a>
+                                <a class="list-group-item list-group-item-action d-none" href="/usermanagement" data-admin="1">Manage Users</a>
                                 <a class="list-group-item list-group-item-action" href="/about">About Us</a>
                                 <a class="list-group-item list-group-item-action d-none" href="/signout" data-login="1">Logout</a>
                             </div>

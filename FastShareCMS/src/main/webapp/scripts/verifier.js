@@ -2,12 +2,14 @@ var logged_in;
 var logged_out;
 var logged_name;
 var main_header;
+var logged_admin;
 
 function initializeEnv(){
     main_header = document.querySelector("#main_header");
     logged_in = document.querySelectorAll('[data-login="1"]');
     logged_out = document.querySelectorAll('[data-login="0"]');
     logged_name = document.querySelectorAll('[data-uname="1"]');
+    logged_admin = document.querySelectorAll('[data-admin="1"]');
     checkSession();
 }
 
@@ -24,6 +26,11 @@ function checkSession(){
                     logged_name.forEach(function (item){
                         item.textContent = status["username"];
                     });
+                    if (status["role"] === "ADMIN"){
+                        logged_admin.forEach(function (item){
+                            item.classList.remove("d-none");
+                        });
+                    }
                     if (main_header) main_header.textContent = `You're welcome, ${status["name"]}!`;
                 }
                 else logged_out.forEach(function (item){

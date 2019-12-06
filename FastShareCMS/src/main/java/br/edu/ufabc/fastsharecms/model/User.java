@@ -81,7 +81,7 @@ public class User {
     }
 
     public Boolean getApproved() {
-        return approved || Boolean.TRUE;
+        return approved || this.getRole().equals("ADMIN");
     }
 
     public void setApproved(Boolean approved) {

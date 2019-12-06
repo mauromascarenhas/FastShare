@@ -3,14 +3,14 @@
 <html lang="en-GB">
     <head>
         <meta charset="utf-8">
-        <title>FastShare CMS | Home</title>
+        <title>Manage Users | FastShare CMS</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <script src="/scripts/homefeeder.js"></script>
+        <script src="/scripts/userapproval.js"></script>
         
         <link rel="shortcut icon" href="/imgs/logo_sr.png">
         <link rel="apple-touch-icon" href="/imgs/logo_sr.png">
@@ -60,48 +60,46 @@
         <main role="main" class="container">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-8">
-                        <h1 class="mt-3">Search results for : <c:out value="${param['query']}"></c:out></h1>
-                        <div id="posts">
-                        <c:if test="${results.size() eq 0}">
-                            <p class="lead">It seems that we could not find what you were looking for...</p>
-                            <p class="lead">We recommend you to try a new search using different terms.</p>
-                        </c:if>
-                        <c:if test="${results.size() gt 0}">
-                            <p class="lead">Here is what we could find using your search criteria...</p>
-                            <c:forEach var="post" items="${results}">
-                                <div class="card mb-3">
-                                    <img class="card-img-top img-fluid" src="${post.getImgURL()}" alt="Featured image">
-                                    <div class="card-body">
-                                        <h4 class="card-title">${post.getTitle()}</h4>
-                                        <p class="card-text">${post.getDescription()}</p>
-                                        <p class="text-muted">${post.getAuthor().getName()} <a href="/editor?action=edit&amp;id=${post.getId()}">( EDIT )</a></p>
+                    <div class="col-md-12">
+                        <h1 class="mt-3">User management</h1>
+                        <div id="users">
+                        <c:if test="${users.size() gt 0}">
+                            <p class="lead">Check the boxes so as to allow users to post.</p>
+                            <ul class="list-group list-group-flush mt-2">
+                            <c:forEach var="user" items="${users}">
+                                <li class="list-group-item${user.getRole() eq 'ADMIN' ? ' disabled' : ""}">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <div id="spn-${user.getId()}" class="d-flex justify-content-center" style="visibility:hidden;">
+                                                    <div class="spinner-grow" style="width: 1.5rem; height: 1.5rem;" role="status">
+                                                      <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-11">
+                                                <div class="custom-control custom-checkbox">
+                                                    <c:if test="${user.getApproved()}">
+                                                    <input type="checkbox" class="custom-control-input" onchange="changeUser(${user.getId()}, this)" id="${user.getId()}" checked>
+                                                    </c:if>
+                                                    <c:if test="${not user.getApproved()}">
+                                                    <input type="checkbox" class="custom-control-input" onchange="changeUser(${user.getId()}, this)" id="${user.getId()}">
+                                                    </c:if>
+                                                    <label class="custom-control-label" for="${user.getId()}">[ ${user.getRole()} ] ${user.getUsername()}</label>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                </li>
                             </c:forEach>
+                            </ul>
                         </c:if>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card" style="margin-bottom: 20px;">
-                            <div class="card-header text-center">
-                                Quick Links
-                            </div>
-                            <div class="list-group list-group-flush">
-                              <a class="list-group-item list-group-item-action" href="/editor">Create New Post</a>
-                              <a class="list-group-item list-group-item-action disabled" href="/manage-users">Manage Users</a>
-                              <a class="list-group-item list-group-item-action" href="/about">About Us</a>
-                            </div>
-                        </div>
-                        
-                        <div class="card text-center" style="margin-bottom: 20px;">
-                            <div class="card-header">
-                                About Us
-                            </div>
-                            <div class="card-body">
-                                <blockquote class="blockquote mb-0">
-                                    <p class="card-text">FastShare is a simple CMS which focuses on making people's life easier to spread quick information. <a href="/about" class="card-link">Learn more about us!</a></p>
-                                </blockquote>
+                            
+                            <div id="load_error" class="card text-white bg-warning mb-3 text-center d-none mt-5">
+                                <div class="card-title card-header">Update error</div>
+                                <div class="card-body">
+                                    <p class="card-text">Unfortunately it was not possible to update the user approval. We suggest you to try again later...</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -113,6 +111,6 @@
             <div class="container">
               <span class="text-muted">Copyright &copy; 2019. FastShareCMS - All rights reserved.</span>
             </div>
-      </footer>
+        </footer>
     </body>
 </html>

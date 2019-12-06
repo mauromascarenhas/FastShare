@@ -51,10 +51,13 @@ function populate(properties){
         card.classList.add("card");
         card.classList.add("mb-3");
         
+        let imaget = new Image();
         image.classList.add("card-img-top");
         image.classList.add("img-fluid");
-        image.src = properties[i]["image_url"];
         image.alt = "Featured image";
+        imaget.src = properties[i]["image_url"];
+        imaget.onload = function(){ image.src = properties[i]["image_url"]; };
+        imaget.onerror = function() { image.src = "/imgs/gray-background.jpg"; };
         
         content.classList.add("card-body");
         
@@ -62,7 +65,7 @@ function populate(properties){
         header.textContent = properties[i]["title"];
         
         text.classList.add("card-text");
-        text.innerHTML = properties[i]["description"].replace('<', '&lt;').replace('>', '&gt;').replace('\n', '<br />');
+        text.innerHTML = properties[i]["description"].replace('\n', '<br />');
         
         author.classList.add("text-muted");
         author.textContent = properties[i]["author"] + " ";

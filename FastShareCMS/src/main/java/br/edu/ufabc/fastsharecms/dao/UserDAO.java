@@ -40,13 +40,23 @@ public class UserDAO implements GenericDAO<User>{
     public Boolean insert(User item) {
         String sql = "INSERT INTO ent_User (username, name, role, email, psalt, phash, approved)"
                 + " VALUES (?, ?, 'POSTER', ?, ?, ?, 0)";
-        try(PreparedStatement stm = db.connection().prepareStatement(sql)){
+        try(PreparedStatement stm = db.connection().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
             stm.setString(1, item.getUsername());
             stm.setString(2, item.getName());
             stm.setString(3, item.getEmail());
             stm.setString(4, item.getPsalt());
             stm.setString(5, item.getPhash());
-            return stm.executeUpdate() != 0;
+            
+            if (stm.executeUpdate() != 0){
+                ResultSet rs = stm.getGeneratedKeys();
+                if (rs.next()){
+                    if (rs.getLong(1) == 1L)
+                        return update(1L, item);
+                    else return true;
+                }
+                return false;
+            }
+            else return false;
         } catch (SQLException e){
             return false;
         }

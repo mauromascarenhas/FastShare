@@ -3,7 +3,7 @@
 <html lang="en-GB">
     <head>
         <meta charset="utf-8">
-        <title>FastShare CMS | Home</title>
+        <title>My Posts | FastShare CMS</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -61,14 +61,14 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8">
-                        <h1 class="mt-3">Search results for : <c:out value="${param['query']}"></c:out></h1>
+                        <h1 class="mt-3">Your posts</h1>
                         <div id="posts">
                         <c:if test="${results.size() eq 0}">
-                            <p class="lead">It seems that we could not find what you were looking for...</p>
-                            <p class="lead">We recommend you to try a new search using different terms.</p>
+                            <p class="lead">It seems that we could not find anything here...</p>
+                            <p class="lead">Why not create a new one?</p>
                         </c:if>
                         <c:if test="${results.size() gt 0}">
-                            <p class="lead">Here is what we could find using your search criteria...</p>
+                            <p class="lead">Here is what we could find...</p>
                             <c:forEach var="post" items="${results}">
                                 <div class="card mb-3">
                                     <img class="card-img-top img-fluid" src="${post.getImgURL()}" alt="Featured image">

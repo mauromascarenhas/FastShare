@@ -252,9 +252,48 @@ public class PostDAO implements GenericDAO<Post>{
                    + " FROM ent_Post INNER JOIN ent_User"
                    + " ON ent_Post.author = ent_User.id"
                    + " WHERE date < ?"
-                   + " ORDER BY date DESC";
+                   + " ORDER BY date DESC"
+                   + " LIMIT 10";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             stm.setLong(1, date);
+            ResultSet res = stm.executeQuery();
+            while (res.next()){
+                Post post = new Post();
+                post.setId(res.getLong("ent_Post.id"));
+                post.setDate(res.getLong("date"));
+                post.setFlags(res.getLong("flags"));
+                post.setTitle(res.getString("title"));
+                post.setImgURL(res.getString("imgurl"));
+                post.setPostLink(res.getString("postlink"));
+                post.setDescription(res.getString("description"));
+                
+                User user = new User();
+                user.setId(res.getLong("ent_User.id"));
+                user.setName(res.getString("name"));
+                user.setRole(res.getString("role"));
+                user.setPsalt(res.getString("psalt"));
+                user.setPhash(res.getString("phash"));
+                user.setEmail(res.getString("email"));
+                user.setUsername(res.getString("username"));
+                user.setApproved(res.getInt("approved") == 0 ? Boolean.FALSE : Boolean.TRUE);
+                post.setAuthor(user);
+                posts.add(post);
+            }
+        } catch (SQLException e){
+            return null;
+        }
+        return posts;
+    }
+    
+    public List<Post> selectAllAuthor(Long author) {
+        List<Post> posts = new ArrayList<>();
+        String sql = "SELECT *"
+                   + " FROM ent_Post INNER JOIN ent_User"
+                   + " ON ent_Post.author = ent_User.id"
+                   + " WHERE ent_Post.author = ?"
+                   + " ORDER BY date DESC";
+        try(PreparedStatement stm = db.connection().prepareStatement(sql)){
+            stm.setLong(1, author);
             ResultSet res = stm.executeQuery();
             while (res.next()){
                 Post post = new Post();

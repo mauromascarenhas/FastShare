@@ -61,7 +61,8 @@ public class PostEditor extends HttpServlet {
             else {
                 Post p = PostDAO.getInstance().select(Long.parseLong(sid));
                 if (p != null){
-                    if (!p.getAuthor().getId().equals(loggedUser.getId())) redirectURL = "/users/forbidden.html";
+                    if (!p.getAuthor().getId().equals(loggedUser.getId())
+                            && !loggedUser.getRole().equals("ADMIN")) redirectURL = "/users/forbidden.html";
                     else request.setAttribute("content", p);
                 }
                 else redirectURL = "/404.html";
@@ -114,7 +115,7 @@ public class PostEditor extends HttpServlet {
             Post post = new Post();
             post.setTitle(request.getParameter("title"));
             post.setImgURL(request.getParameter("image-url"));
-            post.setDescription(request.getParameter("description"));
+            post.setDescription(request.getParameter("description").replace("<", "&lt;").replace(">", "&gt;"));
             post.setAuthor(loggedUser);
             post.setDate(new Date().getTime());
             post.setFlags(0L);
@@ -136,7 +137,7 @@ public class PostEditor extends HttpServlet {
             
             post.setTitle(request.getParameter("title"));
             post.setImgURL(request.getParameter("image-url"));
-            post.setDescription(request.getParameter("description"));
+            post.setDescription(request.getParameter("description").replace("<", "&lt;").replace(">", "&gt;"));
             post.setPostLink(request.getParameter("link"));
             
             if (PostDAO.getInstance().update(cid, post)){

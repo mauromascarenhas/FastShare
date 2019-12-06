@@ -20,7 +20,8 @@ function updateImage(url){
     let image = new Image();
     image.src = url;
     
-    p_image.src = (image.complete && image.height !== 0) ? url : "/imgs/gray-background.jpg";
+    image.onload = function(){ p_image.src = url; };
+    image.onerror = function() { p_image.src = "/imgs/gray-background.jpg"; };
 }
 
 document.addEventListener("DOMContentLoaded", initializeEnv);

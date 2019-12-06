@@ -43,7 +43,18 @@ public class DatabaseConn {
                                             + " description VARCHAR(512) NOT NULL,"
                                             + " PRIMARY KEY(id),"
                                             + " FOREIGN KEY(author) REFERENCES ent_User(id),"
-                                            + " INDEX idx_date (date DESC));"};
+                                            + " INDEX idx_date (date DESC));",
+        "CREATE TABLE IF NOT EXISTS ent_Role (id SMALLINT, role VARCHAR(128));",
+        "INSERT INTO ent_Role (id, role)"
+            + " SELECT * FROM (SELECT 0, 'ADMIN') AS tmp"
+                + " WHERE NOT EXISTS ("
+                    + " SELECT id FROM ent_Role WHERE id = 0"
+                + " ) LIMIT 1;",
+        "INSERT INTO ent_Role (id, role)"
+            + " SELECT * FROM (SELECT 1, 'POSTER') AS tmp"
+                + " WHERE NOT EXISTS ("
+                    + " SELECT id FROM ent_Role WHERE id = 1"
+                + " ) LIMIT 1;"};
     
     @SuppressWarnings("ConvertToTryWithResources")
     private DatabaseConn(){

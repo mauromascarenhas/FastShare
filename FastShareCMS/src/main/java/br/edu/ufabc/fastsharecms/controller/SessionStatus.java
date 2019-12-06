@@ -38,6 +38,7 @@ public class SessionStatus extends HttpServlet {
             obj.addProperty("username", conn.getUsername());
             obj.addProperty("approved", conn.getApproved());
             obj.addProperty("email", conn.getEmail());
+            obj.addProperty("role", conn.getRole());
         }
         
         try (PrintWriter out = response.getWriter()) {
