@@ -1,5 +1,6 @@
 var id;
 var begin;
+var lastDate;
 var endOfPost;
 var loadError;
 var btLoadMode;
@@ -25,10 +26,7 @@ function getData(){
     let req = new XMLHttpRequest();
     req.onreadystatechange = function(){
         if (req.readyState === 4){
-            if (req.status === 200){
-                console.log(req.responseText);
-                populate(JSON.parse(req.responseText));
-            }
+            if (req.status === 200) populate(JSON.parse(req.responseText));
             else {
                 loadError.classList.remove("d-none");
                 spnLoading.style = "visibility : hidden";
@@ -36,7 +34,7 @@ function getData(){
             }
         }
     };
-    req.open("POST", "/postloader", true);
+    req.open("POST", lastDate ? `/postloader?date=${lastDate}` : "/postloader", true);
     req.send();
 }
 
@@ -64,12 +62,12 @@ function populate(properties){
         header.textContent = properties[i]["title"];
         
         text.classList.add("card-text");
-        text.innerHTML = properties[i]["description"].replace('\n', '<br />');
+        text.innerHTML = properties[i]["description"].replace('<', '&lt;').replace('>', '&gt;').replace('\n', '<br />');
         
         author.classList.add("text-muted");
         author.textContent = properties[i]["author"] + " ";
         
-        edit.href = "/editor?action=\"edit\"&id=" + properties[i]["id"];
+        edit.href = "/editor?action=edit&id=" + properties[i]["id"];
         edit.textContent = "( EDIT )";
         
         card.appendChild(image);
@@ -87,6 +85,8 @@ function populate(properties){
         btLoadMore.style = "visibility : hidden";
         endOfPost.classList.remove("d-none");
     }
+    
+    if (properties.length > 0) lastDate = properties[properties.length - 1]["date"];
 }
 
 document.addEventListener("DOMContentLoaded", initializeEnv);

@@ -34,15 +34,18 @@ public class PostEditor extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String redirectURL = "/editor.jsp";
-        Object act = request.getAttribute("action");
-        String action = act == null ? "create" : act.toString();
+        String sid = request.getParameter("id");
+        String act = request.getParameter("action");
+        if (sid == null || sid.isEmpty()) sid = "-1";
+        if (act == null || act.isEmpty()) act = "create";
         
         User loggedUser = (User)request.getSession().getAttribute("connected_user");
         if (loggedUser == null){
             try{
                 URIBuilder redirect = new URIBuilder("/signin");
                 redirect.addParameter("redirect", "/editor")
-                        .addParameter("action", action);
+                        .addParameter("action", act)
+                        .addParameter("id", sid);
                 redirectURL = redirect.build().toString();
             } catch (URISyntaxException e){
                 redirectURL = "/404";
@@ -51,8 +54,25 @@ public class PostEditor extends HttpServlet {
             }
             return;
         }
-        // TODO : Fix this lack of recognition
         else if (!loggedUser.getApproved()) redirectURL = "/users/no_access.html";
+        
+        if (act.equals("edit")){
+            if (sid.equals("-1")) redirectURL = "/404.html";
+            else {
+                Post p = PostDAO.getInstance().select(Long.parseLong(sid));
+                if (p != null){
+                    if (!p.getAuthor().getId().equals(loggedUser.getId())) redirectURL = "/users/forbidden.html";
+                    else request.setAttribute("content", p);
+                }
+                else redirectURL = "/404.html";
+            }
+        }
+        else {
+            Post p = new Post();
+            p.setId(-1L);
+            p.setAuthor(loggedUser);
+            request.setAttribute("content", p);
+        }
         
         response.setContentType("text/html;charset=UTF-8");
         request.getRequestDispatcher(redirectURL).forward(request, response);
@@ -89,19 +109,41 @@ public class PostEditor extends HttpServlet {
             return;
         }
         
-        Post post = new Post();
-        post.setTitle(request.getParameter("title"));
-        post.setImgURL(request.getParameter("image-url"));
-        post.setDescription(request.getParameter("description"));
-        post.setAuthor(loggedUser);
-        post.setDate(new Date().getTime());
-        post.setFlags(0L);
-        post.setPostLink(request.getParameter("link"));
-        
-        if (PostDAO.getInstance().insert(post)){
-            response.setContentType("text/html;charset=UTF-8");
-            request.getRequestDispatcher("/posts/success.html").forward(request, response);
-            return;
+        Long cid = Long.parseLong(request.getParameter("id"));
+        if (cid.equals(-1L)){
+            Post post = new Post();
+            post.setTitle(request.getParameter("title"));
+            post.setImgURL(request.getParameter("image-url"));
+            post.setDescription(request.getParameter("description"));
+            post.setAuthor(loggedUser);
+            post.setDate(new Date().getTime());
+            post.setFlags(0L);
+            post.setPostLink(request.getParameter("link"));
+            
+            if (PostDAO.getInstance().insert(post)){
+                response.setContentType("text/html;charset=UTF-8");
+                request.getRequestDispatcher("/posts/success.html").forward(request, response);
+                return;
+            }
+        }
+        else {
+            Post post = PostDAO.getInstance().select(cid);
+            if (post == null){
+                response.setContentType("text/html;charset=UTF-8");
+                request.getRequestDispatcher("/posts/fail.html").forward(request, response);
+                return;
+            }
+            
+            post.setTitle(request.getParameter("title"));
+            post.setImgURL(request.getParameter("image-url"));
+            post.setDescription(request.getParameter("description"));
+            post.setPostLink(request.getParameter("link"));
+            
+            if (PostDAO.getInstance().update(cid, post)){
+                response.setContentType("text/html;charset=UTF-8");
+                request.getRequestDispatcher("/posts/success.html").forward(request, response);
+                return;
+            }
         }
         
         response.setContentType("text/html;charset=UTF-8");

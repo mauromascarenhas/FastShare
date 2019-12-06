@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -56,9 +57,11 @@ public class PostLoader extends HttpServlet {
             throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
+        String dateString = request.getParameter("date");
+        Long pastLast = dateString == null ? new Date().getTime() : Long.parseLong(dateString);
         
         JsonArray obj = new JsonArray();
-        List<Post> posts = PostDAO.getInstance().selectAll();
+        List<Post> posts = PostDAO.getInstance().selectAllFromDate(pastLast);
         if (posts != null){
             for (Post p : posts){
                 JsonObject postObj = new JsonObject();
@@ -67,6 +70,7 @@ public class PostLoader extends HttpServlet {
                 postObj.addProperty("title", p.getTitle());
                 postObj.addProperty("description", p.getDescription());
                 postObj.addProperty("image_url", p.getImgURL());
+                postObj.addProperty("date", p.getDate());
                 obj.add(postObj);
             }
         }

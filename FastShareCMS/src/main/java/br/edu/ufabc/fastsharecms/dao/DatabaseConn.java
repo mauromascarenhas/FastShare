@@ -31,7 +31,8 @@ public class DatabaseConn {
                                             + " psalt CHAR(20) NOT NULL,"
                                             + " phash VARCHAR(255) NOT NULL,"
                                             + " approved TINYINT NOT NULL,"
-                                            + " PRIMARY KEY(id));",
+                                            + " PRIMARY KEY(id),"
+                                            + " FULLTEXT (username));",
         "CREATE TABLE IF NOT EXISTS ent_Post (id BIGINT NOT NULL AUTO_INCREMENT,"
                                             + " date BIGINT NOT NULL,"
                                             + " flags BIGINT NOT NULL,"
@@ -41,7 +42,8 @@ public class DatabaseConn {
                                             + " postlink VARCHAR(512) NOT NULL,"
                                             + " description VARCHAR(512) NOT NULL,"
                                             + " PRIMARY KEY(id),"
-                                            + " FOREIGN KEY(author) REFERENCES ent_User(id));"};
+                                            + " FOREIGN KEY(author) REFERENCES ent_User(id),"
+                                            + " INDEX idx_date (date DESC));"};
     
     @SuppressWarnings("ConvertToTryWithResources")
     private DatabaseConn(){

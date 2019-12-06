@@ -65,6 +65,7 @@ public class SignIn extends HttpServlet {
         String password = request.getParameter("password");
         String redirect = request.getParameter("redirect");
         String action = request.getParameter("action");
+        String rid = request.getParameter("id");
 
         udao = UserDAO.getInstance();
         User suser = udao.select(new User(username));
@@ -91,9 +92,10 @@ public class SignIn extends HttpServlet {
                 
                 URIBuilder req = new URIBuilder(redirect);
                 if (action == null) action = "create";
+                if (rid == null) rid = "-1";
                 req.addParameter("action", action);
+                req.addParameter("id", rid);
                 redirect = req.build().toString();
-                response.sendRedirect(redirect);
             } catch (NoSuchAlgorithmException e) {
                 redirect = "/users/create_fail.html";
             } catch (URISyntaxException ex) {
@@ -101,7 +103,6 @@ public class SignIn extends HttpServlet {
                 return;
             }
             response.sendRedirect(redirect);
-            getServletContext().getRequestDispatcher(redirect).forward(request, response);
         }
         else request.getRequestDispatcher("/users/login_error.html").forward(request, response);
     }

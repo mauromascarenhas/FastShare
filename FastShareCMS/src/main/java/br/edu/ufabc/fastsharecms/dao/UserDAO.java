@@ -87,6 +87,7 @@ public class UserDAO implements GenericDAO<User>{
             stm.setString(5, newData.getPsalt());
             stm.setString(6, newData.getPhash());
             stm.setByte(7, (byte)(newData.getApproved() ? 1 : 0));
+            stm.setLong(8, index);
             return stm.executeUpdate() != 0;
         } catch (SQLException e){
             return false;
@@ -144,7 +145,7 @@ public class UserDAO implements GenericDAO<User>{
     @Override
     public List<User> selectAll() {
         ArrayList<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM ent_User";
+        String sql = "SELECT * FROM ent_User ORDER BY username ASC";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             ResultSet res = stm.executeQuery();
             while (res.next()){

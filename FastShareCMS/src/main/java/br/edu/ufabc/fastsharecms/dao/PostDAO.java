@@ -88,6 +88,7 @@ public class PostDAO implements GenericDAO<Post>{
             stm.setString(5, newData.getImgURL());
             stm.setString(6, newData.getPostLink());
             stm.setString(7, newData.getDescription());
+            stm.setLong(8, index);
             return stm.executeUpdate() != 0;
         } catch (SQLException e){
             return false;
@@ -177,7 +178,7 @@ public class PostDAO implements GenericDAO<Post>{
                    + " ORDER BY date DESC";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             ResultSet res = stm.executeQuery();
-            if (res.next()){
+            while (res.next()){
                 Post post = new Post();
                 post.setId(res.getLong("ent_Post.id"));
                 post.setDate(res.getLong("date"));
@@ -217,7 +218,7 @@ public class PostDAO implements GenericDAO<Post>{
             stm.setString(1, query);
             stm.setString(2, query);
             ResultSet res = stm.executeQuery();
-            if (res.next()){
+            while (res.next()){
                 Post post = new Post();
                 post.setId(res.getLong("ent_Post.id"));
                 post.setDate(res.getLong("date"));
@@ -255,7 +256,7 @@ public class PostDAO implements GenericDAO<Post>{
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             stm.setLong(1, date);
             ResultSet res = stm.executeQuery();
-            if (res.next()){
+            while (res.next()){
                 Post post = new Post();
                 post.setId(res.getLong("ent_Post.id"));
                 post.setDate(res.getLong("date"));

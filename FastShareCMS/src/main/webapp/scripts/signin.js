@@ -4,9 +4,6 @@ function appendParams(){
     let redirect = params.get("redirect");
     let action = params.get("action");
     
-    console.log(redirect);
-    console.log(action);
-    
     if (redirect){
         let rdirect = document.querySelector("#form_redirect");
         if (!rdirect) rdirect = document.createElement("input");

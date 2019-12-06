@@ -68,30 +68,31 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-heading"></i> </span>
                             </div>
-                            <input name="title" class="form-control" placeholder="Title" type="text" required="true" oninput="updateTitle(this.value);">
+                            <input name="title" class="form-control" placeholder="Title" type="text" required="true" value="${content.getId() ne -1 ? content.getTitle() : ""}" oninput="updateTitle(this.value);">
                         </div>
 
                         <div class="form-group input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-images"></i> </span>
                             </div>
-                            <input name="image-url" class="form-control" placeholder="https://server.domain/image.extension" type="text" required="true" onfocusout="updateImage(this.value);">
+                            <input name="image-url" class="form-control" placeholder="https://server.domain/image.extension" type="text" required="true" value="${content.getId() ne -1 ? content.getImgURL() : ""}" onfocusout="updateImage(this.value);">
                         </div>
 
                         <div class="form-group input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-align-justify"></i> </span>
                             </div>
-                            <textarea rows="3" max-length="512" name="description" class="form-control" placeholder="Your description goes here!" required="true" oninput="updateText(this.value);"></textarea>
+                            <textarea rows="3" max-length="512" name="description" class="form-control" placeholder="Your description goes here!" required="true" oninput="updateText(this.value);">${content.getId() ne -1 ? content.getDescription() : ""}</textarea>
                         </div>
 
                         <div class="form-group input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"> <i class="fa fa-external-link-alt"></i> </span>
                             </div>
-                            <input name="link" class="form-control" placeholder="https://mylink.to/page/article/etc" type="text" required="true">
+                            <input name="link" class="form-control" placeholder="https://mylink.to/page/article/etc" type="text" required="true" value="${content.getId() ne -1 ? content.getPostLink() : ""}">
                         </div>
 
+                        <input type="hidden" name="id" value="${content.getId()}" />
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary btn-block"> SAVE </button>
                         </div>
@@ -100,11 +101,11 @@
                 <div class="col-sm-7">
                     <h4 class="mt-3 text-center">Post Preview</h4>
                     <div class="card mb-3">
-                        <img id="pv_image" src="/imgs/gray-background.jpg" class="img-fluid">
+                        <img id="pv_image" src="${content.getId() ne -1 ? content.getImgURL() : "/imgs/gray-background.jpg"}" class="img-fluid">
                         <div class="card-body">
-                            <h5 id="pv_title" class="card-title">Title</h5>
-                            <p id="pv_text" class="card-text">Your description goes here!</p>
-                            <p class="card-text"><small class="text-muted" data-uname="1">&lt; YourUsername &gt;</small></p>
+                            <h5 id="pv_title" class="card-title">${content.getId() ne -1 ? content.getTitle() : "Title"}</h5>
+                            <p id="pv_text" class="card-text">${content.getId() ne -1 ? content.getDescription() : "Your description goes here!"}</p>
+                            <p class="card-text"><small class="text-muted" data-uname="1">${content.getAuthor().getName()}</small></p>
                         </div>
                     </div>
                 </div>
