@@ -77,7 +77,9 @@
                             <p class="lead">Here is what we could find...</p>
                             <c:forEach var="post" items="${results}">
                                 <div class="card mb-3">
-                                    <img class="card-img-top img-fluid" src="${post.getImgURL()}" alt="Featured image">
+                                    <a href="${post.getPostLink()}" target="_blank">
+                                        <img class="card-img-top img-fluid" src="${post.getImgURL()}" alt="Featured image">
+                                    </a>
                                     <div class="card-body">
                                         <h4 class="card-title">${post.getTitle()}</h4>
                                         <p class="card-text">${post.getDescription()}</p>
@@ -94,9 +96,12 @@
                                 Quick Links
                             </div>
                             <div class="list-group list-group-flush">
-                              <a class="list-group-item list-group-item-action" href="/editor">Create New Post</a>
-                              <a class="list-group-item list-group-item-action disabled" href="/manage-users">Manage Users</a>
-                              <a class="list-group-item list-group-item-action" href="/about">About Us</a>
+                                <a class="list-group-item list-group-item-action d-none" href="/signin" data-login="0">Sign In</a>
+                                <a class="list-group-item list-group-item-action d-none" href="/signup" data-login="0">Sign Up</a>
+                                <a class="list-group-item list-group-item-action d-none" href="/editor" data-login="1">Create New Post</a>
+                                <a class="list-group-item list-group-item-action d-none" href="/usermanagement" data-admin="1">Manage Users</a>
+                                <a class="list-group-item list-group-item-action" href="/about">About Us</a>
+                                <a class="list-group-item list-group-item-action d-none" href="/signout" data-login="1">Logout</a>
                             </div>
                         </div>
                         

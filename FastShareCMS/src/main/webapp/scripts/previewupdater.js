@@ -9,7 +9,7 @@ function initializeEnv(){
 }
 
 function updateText(value){
-    p_text.textContent = value ? value : "Your description goes here!";
+    p_text.innerHTML = value ? value.replace('<', '&lt;').replace('>', '&gt;').replace('\n', '<br />') : "Your description goes here!";
 }
 
 function updateTitle(value){

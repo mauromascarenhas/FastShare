@@ -93,6 +93,10 @@ function populate(properties){
         btLoadMore.style = "visibility : hidden";
         endOfPost.classList.remove("d-none");
     }
+    else {
+        spnLoading.style = "visibility : hidden";
+        btLoadMore.style = "visibility : visible";
+    }
     
     if (properties.length > 0) lastDate = properties[properties.length - 1]["date"];
 }
