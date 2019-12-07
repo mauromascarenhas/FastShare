@@ -3,14 +3,14 @@
 <html lang="en-GB">
     <head>
         <meta charset="utf-8">
-        <title>FastShare CMS | Home</title>
+        <title>Search | FastShare CMS</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <script src="/scripts/homefeeder.js"></script>
+        <script src="/scripts/verifier.js"></script>
         
         <link rel="shortcut icon" href="/imgs/logo_sr.png">
         <link rel="apple-touch-icon" href="/imgs/logo_sr.png">
@@ -25,33 +25,39 @@
                     FastShareCMS
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
-                  <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
-                  <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                      <a class="nav-link" href="/">Home <span class="sr-only">(página atual)</span></a>
-                    </li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Posts
-                      </a>
-                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/editor">Create New</a>
-                        <a class="dropdown-item disabled" href="/my-posts">My Posts</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item disabled" href="/manage-users">Manage Users</a>
-                      </div>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="/about">About</a>
-                    </li>
-                  </ul>
-                  <form class="form-inline my-2 my-lg-0" action="search" method="GET">
-                    <input name="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button id="search_btn" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                  </form>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home <span class="sr-only">(página atual)</span></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Posts
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/editor">Create New</a>
+                                <a class="dropdown-item d-none" href="/myposts" data-login="1">My Posts</a>
+                                <div class="dropdown-divider d-none" data-admin="1"></div>
+                                <a class="dropdown-item d-none" href="/usermanagement" data-admin="1">Manage Users</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">About</a>
+                        </li>
+                        <li id="nav_signin" class="nav-item d-none" data-login="0">
+                            <a class="nav-link" href="/signin">Sign In</a>
+                        </li>
+                        <li id="nav_logout" class="nav-item d-none" data-login="1">
+                            <a class="nav-link" href="/signout">Logout</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0" action="search" method="GET">
+                        <input name="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button id="search_btn" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
                 </div>
             </nav>
         </header>

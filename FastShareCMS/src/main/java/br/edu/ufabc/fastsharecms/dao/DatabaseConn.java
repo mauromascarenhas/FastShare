@@ -21,17 +21,20 @@ public class DatabaseConn {
     
     private static DatabaseConn db = null;
     
-    // TODO : ADD constraints
     private static final String[] CREATE_STATEMENT = {
+        "CREATE TABLE IF NOT EXISTS ent_Role (id SMALLINT NOT NULL,"
+                                            + " role VARCHAR(64) NOT NULL,"
+                                            + " PRIMARY KEY(id));",
         "CREATE TABLE IF NOT EXISTS ent_User (id BIGINT NOT NULL AUTO_INCREMENT,"
                                             + " username VARCHAR(128) NOT NULL,"
                                             + " name VARCHAR(256) NOT NULL UNIQUE,"
                                             + " email VARCHAR(256) NOT NULL,"
-                                            + " role VARCHAR(64) NOT NULL,"
+                                            + " nrole SMALLINT NOT NULL,"
                                             + " psalt CHAR(20) NOT NULL,"
                                             + " phash VARCHAR(255) NOT NULL,"
                                             + " approved TINYINT NOT NULL,"
                                             + " PRIMARY KEY(id),"
+                                            + " FOREIGN KEY(nrole) REFERENCES ent_Role(id),"
                                             + " FULLTEXT (username));",
         "CREATE TABLE IF NOT EXISTS ent_Post (id BIGINT NOT NULL AUTO_INCREMENT,"
                                             + " date BIGINT NOT NULL,"
@@ -44,7 +47,6 @@ public class DatabaseConn {
                                             + " PRIMARY KEY(id),"
                                             + " FOREIGN KEY(author) REFERENCES ent_User(id),"
                                             + " INDEX idx_date (date DESC));",
-        "CREATE TABLE IF NOT EXISTS ent_Role (id SMALLINT, role VARCHAR(128));",
         "INSERT INTO ent_Role (id, role)"
             + " SELECT * FROM (SELECT 0, 'ADMIN') AS tmp"
                 + " WHERE NOT EXISTS ("

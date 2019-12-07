@@ -69,6 +69,7 @@ public class PostLoader extends HttpServlet {
                 postObj.addProperty("author", p.getAuthor().getName());
                 postObj.addProperty("title", p.getTitle());
                 postObj.addProperty("description", p.getDescription());
+                postObj.addProperty("linkto_url", p.getPostLink());
                 postObj.addProperty("image_url", p.getImgURL());
                 postObj.addProperty("date", p.getDate());
                 obj.add(postObj);

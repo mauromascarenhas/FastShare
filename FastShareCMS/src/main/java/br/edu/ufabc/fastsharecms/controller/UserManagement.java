@@ -26,7 +26,6 @@ public class UserManagement extends HttpServlet {
 
     private static final long serialVersionUID = 10L;
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -72,7 +71,38 @@ public class UserManagement extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/404.html").forward(request, response);
+        String id = request.getParameter("id");
+        String status = request.getParameter("status");
+        
+        User loggedUser = (User) request.getSession().getAttribute("connected_user");
+        if (loggedUser == null || id == null || status == null
+                || id.isEmpty() || status.isEmpty()) {
+            response.sendRedirect("/404");
+            return;
+        }
+        else if (!loggedUser.getRole().equals("ADMIN")){
+            request.getRequestDispatcher("/users/forbidden.html").forward(request, response);
+            return;
+        }
+        
+        try (PrintWriter out = response.getWriter()){
+            Long index = Long.parseLong(id);
+            User user = UserDAO.getInstance().select(index);
+            if (user == null){
+                out.print("ERROR");
+                return;
+            }
+            
+            System.out.println(status.equals("1"));
+            System.out.println(user);
+            
+            user.setApproved(status.equals("1"));
+            out.print(UserDAO.getInstance().update(index, user) ? "OK" : "ERROR");
+        }
+        catch (Exception e){
+            response.getWriter().print("ERROR");
+            response.getWriter().close();
+        }
     }
 
     /**
@@ -83,6 +113,6 @@ public class UserManagement extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

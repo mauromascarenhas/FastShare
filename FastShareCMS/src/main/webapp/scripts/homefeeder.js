@@ -42,6 +42,7 @@ function populate(properties){
     for (let i = 0; i < properties.length; ++i){
         let text = document.createElement("p");
         let edit = document.createElement("a");
+        let link = document.createElement("a");
         let card = document.createElement("div");
         let image = document.createElement("img");
         let author = document.createElement("p");
@@ -50,6 +51,9 @@ function populate(properties){
 
         card.classList.add("card");
         card.classList.add("mb-3");
+        
+        link.href = properties[i]["linkto_url"];
+        link.target = "_blank";
         
         let imaget = new Image();
         image.classList.add("card-img-top");
@@ -73,7 +77,8 @@ function populate(properties){
         edit.href = "/editor?action=edit&id=" + properties[i]["id"];
         edit.textContent = "( EDIT )";
         
-        card.appendChild(image);
+        link.appendChild(image);
+        card.appendChild(link);
         card.appendChild(content);
         content.appendChild(header);
         content.appendChild(text);

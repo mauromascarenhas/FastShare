@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en-GB">
     <head>
@@ -27,33 +28,39 @@
                     FastShareCMS
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
-                  <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
-                  <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                      <a class="nav-link" href="/">Home <span class="sr-only">(página atual)</span></a>
-                    </li>
-                    <li class="nav-item dropdown active">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Posts
-                      </a>
-                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item active" href="/#">Create New</a>
-                        <a class="dropdown-item disabled" href="/my-posts">My Posts</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item disabled" href="/manage-users">Manage Users</a>
-                      </div>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="/about">About</a>
-                    </li>
-                  </ul>
-                  <form class="form-inline my-2 my-lg-0" action="search" method="GET">
-                    <input name="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button id="search_btn" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                  </form>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home <span class="sr-only">(página atual)</span></a>
+                        </li>
+                        <li class="nav-item dropdown active">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Posts
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/editor">Create New</a>
+                                <a class="dropdown-item d-none" href="/myposts" data-login="1">My Posts</a>
+                                <div class="dropdown-divider d-none" data-admin="1"></div>
+                                <a class="dropdown-item d-none" href="/usermanagement" data-admin="1">Manage Users</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">About</a>
+                        </li>
+                        <li id="nav_signin" class="nav-item d-none" data-login="0">
+                            <a class="nav-link" href="/signin">Sign In</a>
+                        </li>
+                        <li id="nav_logout" class="nav-item d-none" data-login="1">
+                            <a class="nav-link" href="/signout">Logout</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0" action="search" method="GET">
+                        <input name="query" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button id="search_btn" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
                 </div>
             </nav>
         </header>
@@ -97,6 +104,30 @@
                             <button type="submit" class="btn btn-primary btn-block"> SAVE </button>
                         </div>
                     </form>
+                    <c:if test="${content.getId() ne -1}">
+                    <div id="accordion">
+                        <div class="card border-danger">
+                            <div class="card-header text-center" id="headingRemove">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-danger btn-block" data-toggle="collapse" data-target="#collapseRemove" aria-expanded="false" aria-controls="collapseRemove">
+                                        Remove post
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseRemove" class="collapse" aria-labelledby="headingRemove" data-parent="#accordion">
+                                <div class="card-body">
+                                    <h5>This action cannot be undone. Proceed?</h5>
+                                    <form class="mt-1" method="GET" action="/editor">
+                                        <input type="hidden" name="delete" value="${content.getId()}" />
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-danger btn-block"> REMOVE ANYWAY </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </c:if>
                 </div>
                 <div class="col-sm-7">
                     <h4 class="mt-3 text-center">Post Preview</h4>

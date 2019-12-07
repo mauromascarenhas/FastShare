@@ -38,8 +38,8 @@ public class UserDAO implements GenericDAO<User>{
     
     @Override
     public Boolean insert(User item) {
-        String sql = "INSERT INTO ent_User (username, name, role, email, psalt, phash, approved)"
-                + " VALUES (?, ?, 'POSTER', ?, ?, ?, 0)";
+        String sql = "INSERT INTO ent_User (username, name, nrole, email, psalt, phash, approved)"
+                + " VALUES (?, ?, 1, ?, ?, ?, 0)";
         try(PreparedStatement stm = db.connection().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
             stm.setString(1, item.getUsername());
             stm.setString(2, item.getName());
@@ -50,8 +50,10 @@ public class UserDAO implements GenericDAO<User>{
             if (stm.executeUpdate() != 0){
                 ResultSet rs = stm.getGeneratedKeys();
                 if (rs.next()){
-                    if (rs.getLong(1) == 1L)
+                    if (rs.getLong(1) == 1L){
+                        item.setRole("ADMIN");
                         return update(1L, item);
+                    }
                     else return true;
                 }
                 return false;
@@ -75,7 +77,7 @@ public class UserDAO implements GenericDAO<User>{
 
     @Override
     public Boolean remove(Long index) {
-        String sql = "DELETE FROM ent_User WHERE id = ?";
+        String sql = "DELETE FROM ent_User WHERE ent_User.id = ?";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             stm.setLong(1, index);
             return stm.executeUpdate() != 0;
@@ -86,13 +88,13 @@ public class UserDAO implements GenericDAO<User>{
 
     @Override
     public Boolean update(Long index, User newData) {
-        String sql = "UPDATE ent_User SET username = ?, name = ?, role = ?,"
+        String sql = "UPDATE ent_User SET username = ?, name = ?, nrole = ?,"
                 + " email = ?, psalt = ?, phash = ?, approved = ?"
-                + " WHERE id = ?";
+                + " WHERE ent_User.id = ?";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             stm.setString(1, newData.getUsername());
             stm.setString(2, newData.getName());
-            stm.setString(3, newData.getRole());
+            stm.setShort(3, (short)(newData.getRole().equals("POSTER") ? 1 : 0));
             stm.setString(4, newData.getEmail());
             stm.setString(5, newData.getPsalt());
             stm.setString(6, newData.getPhash());
@@ -107,7 +109,8 @@ public class UserDAO implements GenericDAO<User>{
     @Override
     public User select(Long index) {
         User user = null;
-        String sql = "SELECT * FROM ent_User WHERE id = ?";
+        String sql = "SELECT * FROM ent_User INNER JOIN ent_Role ON ent_User.nrole = ent_Role.id"
+                + " WHERE ent_User.id = ?";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             stm.setLong(1, index);
             ResultSet res = stm.executeQuery();
@@ -131,7 +134,8 @@ public class UserDAO implements GenericDAO<User>{
     @Override
     public User select(User item){
         User user = null;
-        String sql = "SELECT * FROM ent_User WHERE username = ?";
+        String sql = "SELECT * FROM ent_User INNER JOIN ent_Role ON ent_User.nrole = ent_Role.id"
+                    + " WHERE username = ?";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             stm.setString(1, item.getUsername());
             ResultSet res = stm.executeQuery();
@@ -155,7 +159,8 @@ public class UserDAO implements GenericDAO<User>{
     @Override
     public List<User> selectAll() {
         ArrayList<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM ent_User ORDER BY username ASC";
+        String sql = "SELECT * FROM ent_User INNER JOIN ent_Role ON ent_User.nrole = ent_Role.id"
+                    + " ORDER BY username ASC";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             ResultSet res = stm.executeQuery();
             while (res.next()){

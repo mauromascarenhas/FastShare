@@ -36,6 +36,13 @@ public class PostEditor extends HttpServlet {
         String redirectURL = "/editor.jsp";
         String sid = request.getParameter("id");
         String act = request.getParameter("action");
+        String delete = request.getParameter("delete");
+        
+        if (delete != null) {
+            doDelete(request, response);
+            return;
+        }
+        
         if (sid == null || sid.isEmpty()) sid = "-1";
         if (act == null || act.isEmpty()) act = "create";
         
@@ -150,6 +157,34 @@ public class PostEditor extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.getRequestDispatcher("/posts/fail.html").forward(request, response);
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String pid = request.getParameter("delete");
+        User loggedUser = (User)request.getSession().getAttribute("connected_user");
+        if (loggedUser == null || pid == null){
+            request.getRequestDispatcher("/users/forbidden.html").forward(request, response);
+            return;
+        }
+        
+        Long cid = Long.parseLong(pid);
+        Post post = PostDAO.getInstance().select(cid);
+        if (post == null){
+            request.getRequestDispatcher("/users/forbidden.html").forward(request, response);
+            return;
+        }
+        
+        if (post.getAuthor().getId().equals(loggedUser.getId())
+                || loggedUser.getRole().equals("ADMIN")){
+            if (!PostDAO.getInstance().remove(cid))
+                request.getRequestDispatcher("/users/forbidden.html").forward(request, response);
+            else response.sendRedirect("/");
+            return;
+        }
+        request.getRequestDispatcher("/users/forbidden.html").forward(request, response);
+    }
+    
 
     /**
      * Returns a short description of the servlet.

@@ -101,6 +101,8 @@ public class PostDAO implements GenericDAO<Post>{
         String sql = "SELECT *"
                    + " FROM ent_Post INNER JOIN ent_User"
                    + " ON ent_Post.author = ent_User.id"
+                   + " INNER JOIN ent_Role"
+                   + " ON ent_User.nrole = ent_Role.id"
                    + " WHERE ent_Post.id = ?";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             stm.setLong(1, index);
@@ -138,6 +140,8 @@ public class PostDAO implements GenericDAO<Post>{
         String sql = "SELECT *"
                    + " FROM ent_Post INNER JOIN ent_User"
                    + " ON ent_Post.author = ent_User.id"
+                   + " INNER JOIN ent_Role"
+                   + " ON ent_User.nrole = ent_Role.id"
                    + " WHERE ent_Post.id = ?";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             stm.setString(1, item.getTitle());
@@ -175,6 +179,8 @@ public class PostDAO implements GenericDAO<Post>{
         String sql = "SELECT *"
                    + " FROM ent_Post INNER JOIN ent_User"
                    + " ON ent_Post.author = ent_User.id"
+                   + " INNER JOIN ent_Role"
+                   + " ON ent_User.nrole = ent_Role.id"
                    + " ORDER BY date DESC";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
             ResultSet res = stm.executeQuery();
@@ -212,6 +218,8 @@ public class PostDAO implements GenericDAO<Post>{
         String sql = "SELECT *"
                    + " FROM ent_Post INNER JOIN ent_User"
                    + " ON ent_Post.author = ent_User.id"
+                   + " INNER JOIN ent_Role"
+                   + " ON ent_User.nrole = ent_Role.id"
                    + " WHERE title LIKE ? OR description LIKE ?"
                    + " ORDER BY date DESC";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){
@@ -251,6 +259,8 @@ public class PostDAO implements GenericDAO<Post>{
         String sql = "SELECT *"
                    + " FROM ent_Post INNER JOIN ent_User"
                    + " ON ent_Post.author = ent_User.id"
+                   + " INNER JOIN ent_Role"
+                   + " ON ent_User.nrole = ent_Role.id"
                    + " WHERE date < ?"
                    + " ORDER BY date DESC"
                    + " LIMIT 10";
@@ -290,6 +300,8 @@ public class PostDAO implements GenericDAO<Post>{
         String sql = "SELECT *"
                    + " FROM ent_Post INNER JOIN ent_User"
                    + " ON ent_Post.author = ent_User.id"
+                   + " INNER JOIN ent_Role"
+                   + " ON ent_User.nrole = ent_Role.id"
                    + " WHERE ent_Post.author = ?"
                    + " ORDER BY date DESC";
         try(PreparedStatement stm = db.connection().prepareStatement(sql)){

@@ -15,7 +15,7 @@
         <link rel="shortcut icon" href="/imgs/logo_sr.png">
         <link rel="apple-touch-icon" href="/imgs/logo_sr.png">
 
-        <title>FastShare CMS | SignIn</title>
+        <title>SignIn | FastShare CMS</title>
     </head>
 
     <body class="bg-light">

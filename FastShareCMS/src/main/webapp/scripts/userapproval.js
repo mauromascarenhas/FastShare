@@ -22,7 +22,7 @@ function changeUser(id, caller){
             else loadError.classList.remove("d-none");
         }
     };
-    req.open("POST", `/usermanagement?id=${id}`, true);
+    req.open("POST", `/usermanagement?id=${id}&status=${caller.checked ? 1 : 0}`, true);
     req.send();
 }
 
