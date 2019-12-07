@@ -9,29 +9,34 @@
         <url-pattern>/about</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>server_error</servlet-name>
+        <jsp-file>/500.html</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>server_error</servlet-name>
+        <url-pattern>/500</url-pattern>
+    </servlet-mapping>
+    
     <error-page>
-        <!-- Missing login -->
         <error-code>401</error-code>
-        <location>/general-error.html</location>
+        <location>/404.html</location>
     </error-page>
     <error-page>
-        <!-- Forbidden directory listing -->
         <error-code>403</error-code>
-        <location>/general-error.html</location>
+        <location>/users/forbidden.html</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
         <location>/404.html</location>
     </error-page>
     <error-page>
-        <!-- Uncaught exception -->
         <error-code>500</error-code>
-        <location>/general-error.html</location>
+        <location>/500.html</location>
     </error-page>
     <error-page>
-        <!-- Unsupported servlet method -->
         <error-code>503</error-code>
-        <location>/general-error.html</location>
+        <location>/404.html</location>
     </error-page>
     
     <session-config>
